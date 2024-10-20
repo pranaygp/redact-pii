@@ -38,14 +38,17 @@ export function composeChildRedactors<T extends AsyncCustomRedactorConfig>(opts:
       childRedactors.push(
         new SimpleRegexpRedactor({
           regexpPattern: (simpleRegexpBuiltIns as any)[regexpName],
-          replaceWith: opts.globalReplaceWith || snakeCase(regexpName).toUpperCase(),
+          replaceWith:
+            (opts.builtInRedactors as any)?.[regexpName]?.replaceWith ||
+            opts.globalReplaceWith ||
+            snakeCase(regexpName).toUpperCase(),
         })
       );
     }
   }
 
   if (!opts.builtInRedactors || !opts.builtInRedactors.names || opts.builtInRedactors.names.enabled !== false) {
-    childRedactors.push(new NameRedactor(opts.globalReplaceWith));
+    childRedactors.push(new NameRedactor(opts.builtInRedactors?.names?.replaceWith || opts.globalReplaceWith));
   }
 
   if (opts.customRedactors && opts.customRedactors.after) {

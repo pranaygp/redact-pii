@@ -142,7 +142,7 @@ const redactor = new AsyncRedactor({
 });
 ```
 
-### Disable specific built-in redaction rules
+### Disable or override specific built-in redaction rules
 
 ```js
 const redactor = new SyncRedactor({
@@ -151,7 +151,7 @@ const redactor = new SyncRedactor({
       enabled: false
     },
     emailAddress: {
-      enabled: false
+      replaceWith: "redacted@example.com"
     }
   }
 });

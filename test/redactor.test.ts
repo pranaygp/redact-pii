@@ -191,6 +191,17 @@ describe('index.js', function () {
     expect(redactor.redact('I love cats, dogs, and cows')).toBe('I love ANIMAL, ANIMAL, and ANIMAL');
   });
 
+  it('should accept custom replacements for built in redactors', function () {
+    let redactor = new SyncRedactor({
+      builtInRedactors: {
+        emailAddress: { replaceWith: '<REDACTED_EMAIL>' },
+        names: { replaceWith: '<REDACTED_NAME>' },
+      },
+    });
+    expect(redactor.redact('My email: joe123@solvvy.co.uk.')).toBe('My email: <REDACTED_EMAIL>.');
+    expect(redactor.redact('My name is Joshua')).toBe('My name is <REDACTED_NAME>');
+  });
+
   TestCase('should replace digits', [['codeA: 123, codeB: 6789', 'codeA: 123, codeB: DIGITS']]);
 
   TestCase('should replace URLs', [
